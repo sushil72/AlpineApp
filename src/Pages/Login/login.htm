@@ -1,0 +1,80 @@
+<div class="flex flex-wrap justify-around gap-5">
+  <!-- Login Section -->
+  <div class="flex-1 flex flex-col items-center gap-3">
+    <h1 class="font-semibold text-2xl">Login To Your Account</h1>
+
+    <!-- Input for Email or Phone -->
+    <input
+      type="text"
+      name="email_phone"
+      placeholder="Email or Phone Number"
+      class="w-[20rem] md:w-[30rem] px-3 py-2 border rounded-full outline-none text-black"
+      x-model="identifier"
+      @input="checkInputType"
+    />
+
+    <!-- Conditional Input for Password -->
+    <template x-if="isEmail && identifier">
+      <input
+        type="password"
+        name="login_password"
+        placeholder="Enter Password"
+        class="w-[20rem] md:w-[30rem] px-3 py-2 border rounded-full outline-none text-black"
+        x-model="password"
+      />
+    </template>
+
+    <!-- Conditional Input for OTP -->
+    <template x-if="!isEmail && identifier && otpSent">
+      <input
+        type="text"
+        name="otp"
+        placeholder="Enter OTP"
+        class="w-[20rem] md:w-[30rem] px-3 py-2 border rounded-full outline-none text-black"
+        x-model="otp"
+      />
+    </template>
+
+    <div x-data id="recaptcha-container"></div>
+    <!-- Login Button -->
+    <button
+      x-show="isEmail"
+      class="hover-animated-button font-semibold text-xs bg-orange-500 w-[20rem] px-4 py-2 border border-orange-500 rounded-full"
+      :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+      @Click="login()"
+    >
+      Continue
+    </button>
+    <button
+      x-show="!isEmail && !otp"
+      class="hover-animated-button font-semibold text-xs bg-orange-500 w-[20rem] px-4 py-2 border border-orange-500 rounded-full"
+      :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+      @Click="sendOtp()"
+    >
+      Continue
+    </button>
+    <button
+      x-show="!isEmail && otp"
+      class="hover-animated-button font-semibold text-xs bg-orange-500 w-[20rem] px-4 py-2 border border-orange-500 rounded-full"
+      :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+      @Click="loginAfterOtp(otp)"
+    >
+      Verify otp
+    </button>
+  </div>
+
+  <!-- Registration Section -->
+  <div class="flex-1 flex flex-col items-center justify-center gap-3">
+    <h1 class="font-semibold text-2xl">Create Your Account</h1>
+
+    <p>Create a free account and join us!</p>
+
+    <button
+      @click="currentPage = 'register'"
+      class="hover-animated-button font-semibold text-xs bg-orange-500 w-[20rem] px-4 py-2 border border-orange-500 rounded-full"
+      :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+    >
+      Create An Account
+    </button>
+  </div>
+</div>

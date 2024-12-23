@@ -1,0 +1,168 @@
+<div class="text-gray-500 pb-10" x-data="{ cart : cart , total : setTotal()}">
+  <div
+    x-show="cart.length<=0"
+    class="flex flex-col justify-center items-center gap-2"
+  >
+    <img src="../../../assets/images/empty_cart.png" alt="empty cart" />
+    <h1 class="text-2xl">Your Cart Is Empty!</h1>
+    <p class="mt-3">Add items to it now.</p>
+    <button
+      @click="currentPage = 'home'"
+      class="hover-animated-button font-semibold text-xs bg-orange-500 px-4 py-2 border border-orange-500 w-[20rem] rounded-full"
+      :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+    >
+      CONTINUE SHOPPING
+    </button>
+  </div>
+
+  <div x-show="cart.length>0" class="flex flex-wrap justify-between gap-2">
+    <div class="flex flex-col gap-3 w-[60rem]">
+      <p
+        class="font-semibold text-2xl"
+        :class="darkMode ? 'text-white' : 'text-black'"
+      >
+        Shopping Cart
+      </p>
+      <table class="h-fit border-collapse border border-gray-300">
+        <!-- Table Head -->
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-4 text-left">Product Details</th>
+            <th class="p-4 text-left">Price</th>
+            <th class="p-4 text-left">Quantity</th>
+            <th class="p-4 text-left">Total</th>
+            <th class="p-4"></th>
+          </tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody>
+          <template x-for="food in cart" :key="food.item">
+            <tr
+              x-data="{ quantity: food.quantity || 1,
+                increment(){
+                  this.quantity++;
+                  food.quantity = this.quantity;
+                  total = setTotal();
+                },
+                decrement(){
+                  if(this.quantity <= 1){
+                    removeFromCart(food);
+                  }else{
+                    this.quantity--;
+                    food.quantity = this.quantity;
+                    total = setTotal();
+                  }
+                } }"
+              class="border-b hover:bg-gray-50"
+            >
+              <!-- Product Details -->
+              <td class="p-4 flex items-center gap-4">
+                <img
+                  :src="food.img || ''"
+                  alt="Product image"
+                  class="h-24 w-24 rounded"
+                />
+                <div>
+                  <span
+                    class="text-sm text-gray-600"
+                    x-text="food.category"
+                  ></span>
+                  <h2 class="text-lg font-bold" x-text="food.item"></h2>
+                </div>
+              </td>
+              <!-- Price -->
+              <td class="p-4 text-gray-600">
+                ₹ <span x-text="food.price"></span>
+              </td>
+              <!-- Quantity -->
+              <td class="p-4">
+                <div class="w-fit border border-orange-500 rounded">
+                  <button
+                    @click="decrement()"
+                    class="px-2 py-1 border-r border-orange-500"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    min="0"
+                    name="cart_quantity"
+                    x-model="quantity"
+                    class="w-12 text-center bg-transparent outline-none"
+                  />
+                  <button
+                    @click="increment()"
+                    class="px-2 py-1 border-l border-orange-500"
+                  >
+                    +
+                  </button>
+                </div>
+              </td>
+              <!-- Total -->
+              <td class="p-4 font-semibold text-gray-800">
+                ₹ <span x-text="food.price * quantity"></span>
+              </td>
+              <!-- Remove Button -->
+              <td class="p-4 text-center">
+                <button
+                  @click="removeFromCart(food)"
+                  class="text-red-500 hover:text-red-700"
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </template>
+
+          <tr class="flex justify-between p-5">
+            <td :class="darkMode ? 'text-white' : 'text-black'">Sub Total:</td>
+            <td>₹<span x-text="total"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex flex-col gap-3 w-full md:w-fit md:min-w-[25rem] p-5 shadow-md rounded-xl">
+      <h1 class="font-semibold text-2xl">Order Summary</h1>
+      <p class="text-xl">Specific instructions</p>
+      <p class="bg-gray-200 px-5 py-1 border">
+        Do you want to add any instructions?
+      </p>
+
+      <p class="flex justify-between pb-3 border-b">
+        Total
+        <span class="font-bold">₹ <span x-text="total"></span> </span>
+      </p>
+
+      <p class="flex justify-between pb-3 border-y">
+        Service Fee <span class="font-bold">₹ 5.20</span>
+      </p>
+
+      <p class="flex justify-between pb-3 border-b">
+        Tax <span class="font-bold">₹ 13.00</span>
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <span class="text-lg">Do you want to give a tip?</span>
+        <div
+          class="flex flex-col mx-auto py-2 px-3 border border-orange-500 rounded"
+        >
+          <button>Custom</button>
+          <button>Amount</button>
+        </div>
+      </div>
+
+      <p class="flex justify-between pb-3 border-y">
+        Amount Payable
+        <span class="font-bold" x-text="'₹'+(total+5.20+13)"></span>
+      </p>
+      <button
+        @click=" isLogin ? getProductForPayment() : currentPage = 'login' "
+        class="hover-animated-button font-semibold text-xs bg-orange-500 px-4 py-2 border border-orange-500 rounded-full"
+        :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+      >
+        Place Order
+      </button>
+    </div>
+  </div>
+</div>

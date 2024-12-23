@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Colors */
+@layer base {
+  :root {
+    --theme-default: #e76f0a;
+    --top-header-color: #1a9400;
+    --dashboard-theme-color: #4c4c4c;
+  }
+}
+
+/* Apply custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the vertical scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e76f0a; /* Color of the scrollbar thumb */
+  background-clip: content-box; /* Prevent overlap and remove border-like appearance */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Set the track color */
+  border: none; /* Remove any border around the track */
+}
+
+/* Hover effect for the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e76f0a; /* Darker color when hovered */
+}
+
+/* Custom Input type="number" */
+/* Hide spinners in Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide spinners in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+/* Custom Button Styles */
+.hover-animated-button {
+  animation: color-reverse 0.175s forwards;
+}
+
+.hover-animated-button:hover {
+  animation: color-transition 0.175s forwards;
+}
+
+@keyframes color-transition {
+  0% {
+    background: linear-gradient(60deg, #e76f0a 0%, #e76f0a 50%, transparent 50%, transparent 100%);
+  }
+  50% {
+    background: linear-gradient(90deg, transparent 0%, transparent 50%, transparent 50%, transparent 100%);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+@keyframes color-reverse {
+  0% {
+    background: transparent;
+  }
+  50% {
+    background: linear-gradient(60deg, #e76f0a 0%, #e76f0a 50%, transparent 50%, transparent 100%);
+  }
+  100% {
+    background: linear-gradient(90deg, #e76f0a 0%, #e76f0a 50%, #e76f0a 50%, #e76f0a 100%);
+  }
+}
+
+
+
+
+
+
+/* Optional for better visuals */
+.slider-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-item {
+  flex: 0 0 calc(100% / 9); /* Each image takes up 1/9th of the slider width */
+}
+
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}

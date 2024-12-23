@@ -1,0 +1,106 @@
+<div x-data="{user:fetchUserdetails()}" class="flex flex-wrap md:flex-nowrap gap-5">
+  <!-- Navbar -->
+  <ul class="flex flex-col w-full md:w-[20rem]">
+    <li
+      class="text-orange-600 bg-gradient-to-r from-orange-300 to-orange-100 px-5 py-2 border-l-4 border-orange-600 transition-all"
+    >
+      <button
+        @click="currentPage = 'user_profile'"
+        class="flex items-center gap-5 justify-between w-full"
+      >
+        <span>Account Info</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </li>
+    <li
+      class="px-5 py-2 hover:border-l-4 hover:border-orange-600 transition-all hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-100"
+    >
+      <button
+        @click="currentPage = 'user_myorders'"
+        class="flex items-center gap-5 justify-between w-full"
+      >
+        <span>My Orders</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </li>
+    <li
+      class="px-5 py-2 hover:border-l-4 hover:border-orange-600 transition-all hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-100"
+    >
+      <button
+        @click="logout()"
+        class="flex items-center gap-5 justify-between w-full"
+      >
+        <span>Logout</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </li>
+  </ul>
+
+  <!-- Profile -->
+  <div class="flex flex-col gap-5 w-full">
+    <h1 class="font-bold">MY PROFILE</h1>
+
+    <!-- Image, Name, EDIT PROFILE -->
+    <div class="flex items-center gap-5 p-5">
+      <img
+        class="w-24 rounded-full h-24"
+        src="https://s3.us-west-2.amazonaws.com/royoorders2.0-assets/default/default_image.png"
+        alt="profile_pic"
+      />
+      <span x-text="userDetails?.name || 'username'"></span>
+      <button
+        class="hover-animated-button font-semibold text-xs bg-orange-500 px-4 py-2 ml-auto border border-orange-500 rounded-full"
+        :class="darkMode ? 'text-white' : 'text-white hover:text-black'"
+      >
+        EDIT PROFILE
+      </button>
+    </div>
+
+    <!-- About Me -->
+    <div class="p-5">
+      <p>About Me</p>
+    </div>
+
+    <hr />
+
+    <!-- Personal Details -->
+    <p class="font-thin text-xl">
+      Your Referral Code:
+      <span x-text="userDetails?.referral_code || '0C@432tr'"></span>
+    </p>
+
+    <div class="text-lg flex flex-col gap-5 px-8">
+      <!-- Name -->
+      <section class="flex items-center gap-40">
+        <p>Name:</p>
+        <p x-text="userDetails?.name || 'name here'"></p>
+      </section>
+
+      <!-- Email -->
+      <section class="flex items-center gap-[165px]">
+        <p>Email:</p>
+        <p x-text="userDetails?.email || 'example@email.com'"></p>
+      </section>
+
+      <!-- Phone Number -->
+      <section class="flex items-center gap-[85px]">
+        <p>Phone Number:</p>
+        <p x-text="userDetails?.phone_number || 'xxxxxxxxx'"></p>
+      </section>
+
+      <!-- Time Zone -->
+      <section class="flex flex-col gap-2">
+        <p>Time Zone</p>
+        <select
+          name="userProfile_timezone"
+          id="userProfile_timezone"
+          class="bg-transparent px-3 py-2 w-fit border border-gray-300 outline-none"
+        >
+          <option value="Kolkata" :class="darkMode ? 'bg-black' : 'bg-white'">
+            (GMT/UTC + 05:30) Kolkata
+          </option>
+        </select>
+      </section>
+    </div>
+  </div>
+</div>

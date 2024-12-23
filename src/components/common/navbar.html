@@ -1,0 +1,23 @@
+<!-- Top Product bar -->
+<div :class="darkMode ? 'bg-gray-900' : 'bg-[#e5e7eb]'" class="relative w-full overflow-hidden">
+  <div class="tracking-wider text-sm text-gray-500 flex gap-5 px-10 py-2 transition-transform duration-300"
+    :style="{ transform: `translateX(-${sliderCurrentIndex * slideWidth}%)` }">
+    <!-- Image Items -->
+    <template x-for="item in sliderItems" :key="item.id">
+      <div class="w-[calc(100%/2)] sm:w-[calc(100%/5)] md:w-[calc(100%/9)] flex-shrink-0 flex flex-col items-center gap-2">
+        <template x-if="currentPage === 'home'">
+          <img :src="item.img_url" alt="product img" class="w-20 h-20 rounded-full">
+        </template>
+        <h3 x-text="item.title" class="font-semibold"></h3>
+      </div>
+    </template>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <button @click="prevSlide" :class="darkMode ? 'bg-black' : 'bg-white'" class="absolute top-1/2 left-2 transform -translate-y-1/2 px-2 py-1 rounded-full">
+    <i class="fa-solid fa-angle-left"></i>
+  </button>
+  <button @click="nextSlide" :class="darkMode ? 'bg-black' : 'bg-white'" class="absolute top-1/2 right-4 transform -translate-y-1/2 px-2 py-1 rounded-full">
+    <i class="fa-solid fa-angle-right"></i>
+  </button>
+</div>

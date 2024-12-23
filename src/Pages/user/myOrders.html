@@ -1,0 +1,187 @@
+<div x-data="{ orders : fetchOrders() }" class="flex flex-wrap gap-5">
+  <!-- Side Navbar -->
+  <ul class="flex flex-col top-0 w-full md:w-[20rem]">
+    <li
+      class="px-5 py-2 hover:border-l-4 hover:border-orange-600 transition-all hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-100"
+    >
+      <button
+        @click="currentPage = 'user_profile'"
+        class="flex items-center gap-5 justify-between w-full"
+      >
+        <span>Account Info</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </li>
+    <li
+      class="text-orange-600 bg-gradient-to-r from-orange-300 to-orange-100 px-5 py-2 border-l-4 border-orange-600 transition-all"
+    >
+      <button
+        @click="currentPage = 'user_myorders'"
+        class="flex items-center gap-5 justify-between w-full"
+      >
+        <span>My Orders</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </li>
+    <li
+      class="px-5 py-2 hover:border-l-4 hover:border-orange-600 transition-all hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-100"
+    >
+      <button
+        @click="logout()"
+        class="flex items-center gap-5 justify-between w-full"
+      >
+        <span>Logout</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </li>
+  </ul>
+
+  <!-- My Orders -->
+  <div x-data="{goTo: 'active_orders'}" class="flex flex-col gap-5">
+    <h1 class="font-bold">ORDERS</h1>
+    <p class="text-lg">Your Previous Orders</p>
+
+    <!-- NavOptions -->
+    <ul class="font-semibold flex items-center gap-5 mt-5">
+      <li
+        class="pb-2"
+        :class="goTo === 'active_orders' && 'border-b-2 border-orange-600'"
+      >
+        <button @click="goTo = 'active_orders'">ACTIVE ORDERS</button>
+      </li>
+      <li
+        class="pb-2"
+        :class="goTo === 'past_orders' && 'border-b-2 border-orange-600'"
+      >
+        <button @click="goTo = 'past_orders'">PAST ORDERS</button>
+      </li>
+      <li
+        class="pb-2"
+        :class="goTo === 'return_requests' && 'border-b-2 border-orange-600'"
+      >
+        <button @click="goTo = 'return_requests'">RETURN REQUESTS</button>
+      </li>
+      <li
+        class="pb-2"
+        :class="goTo === 'orders_cancel' && 'border-b-2 border-orange-600'"
+      >
+        <button @click="goTo = 'orders_cancel'">ORDERS REJECTED/CANCEL</button>
+      </li>
+    </ul>
+
+    <!-- Filterred Orders -->
+    <!-- Active Orders -->
+    <div
+      x-show="goTo === 'active_orders && !orders'"
+      class="flex flex-wrap items-center justify-start gap-5"
+    >
+      <p
+        class="font-bold"
+        :class="darkMode ? 'text-white' : 'text-black'"
+      >
+        No Active Orders Found
+      </p>
+    </div>
+
+    <!-- Past Orders -->
+    <div
+      x-show="goTo === 'past_orders' && !orders"
+      class="flex flex-col items-center justify-center"
+    >
+      <p class="font-bold" :class="darkMode ? 'text-white' : 'text-black'">
+        No Past Orders Found
+      </p>
+    </div>
+
+    <!-- Return Requests -->
+    <div
+      x-show="goTo === 'return_requests && !orders'"
+      class="flex flex-col items-center justify-center"
+    >
+      <p class="font-bold" :class="darkMode ? 'text-white' : 'text-black'">
+        No Return Requests
+      </p>
+    </div>
+
+    <!-- Orders Cancel -->
+    <div
+      x-show="goTo === 'orders_cancel && !orders'"
+      class="flex flex-col items-center justify-center"
+    >
+      <p class="font-bold" :class="darkMode ? 'text-white' : 'text-black'">
+        No Rejected/Cancel Order Found
+      </p>
+    </div>
+
+    <!-- All Products -->
+    <div class="flex flex-wrap gap-5">
+      <template x-for="food in orders" :key="food?.orderId">
+        <template x-if="goTo === food?.status">
+          <!-- Order Card -->
+          <div x-show="orders" class="rounded-lg shadow-md overflow-hidden" :class="darkMode && 'shadow-gray-700'">
+            <!-- Image Section -->
+            <img
+              :src="food.items[0]?.img || ''"
+              alt="Chicken Biryani"
+              class="w-full h-20 md:h-40 object-cover"
+            />
+  
+            <!-- Order Details -->
+            <div class="p-5">
+              <!-- Title and Status -->
+              <div class="flex justify-between items-center">
+                <h2
+                  x-text="food.items[0]?.item"
+                  class="text-lg font-semibold"
+                  :class="!darkMode && 'text-gray-800'"
+                ></h2>
+                <span
+                  x-text="food?.status"
+                  class="text-sm font-medium text-green-500 bg-green-100 px-2 py-1 rounded-full"
+                >
+                </span>
+              </div>
+  
+              <!-- Vendor and Category -->
+              <p class="text-sm text-gray-600 mt-2">
+                <span x-text="food.items[0]?.vendor" class="font-semibold"
+                  >Vendor:</span
+                >
+              </p>
+              <p class="text-sm text-gray-600">
+                <span x-text="food.items[0]?.category" class="font-semibold"
+                  >Category:</span
+                >
+              </p>
+  
+              <!-- Description -->
+              <p
+                x-text="food.items[0]?.description"
+                class="text-gray-700 text-sm mt-3"
+              ></p>
+  
+              <!-- Price and Date -->
+              <div class="flex justify-between items-center mt-4">
+                <p
+                  class="text-lg font-bold text-orange-500"
+                  x-text="'₹ '+food.items[0]?.price"
+                ></p>
+                <p class="text-sm text-gray-500">
+                  Placed At:
+                  <!-- <span class="font-medium" x-text="food?.placed_at"></span> -->
+                </p>
+              </div>
+  
+              <!-- Action Button -->
+              <button
+                class="w-full bg-orange-500 text-white text-sm font-semibold py-2 rounded-lg mt-4 hover:bg-orange-600 transition-colors"
+              >
+                Order Again
+              </button>
+            </div>
+          </div>
+        </template>
+      </template>
+    </div>
+  </div>
+</div>

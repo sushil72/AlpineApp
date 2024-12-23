@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#4CAF50" />
+
+    <!-- Importing local files -->
+    <script type="module">
+      import mainEntry from "./main.js";
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("applicationStore", mainEntry);
+      });
+    </script>
+
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- Importing Alpine.JS -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+      integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <title>🍔Food Ordering Website👌</title>
+  </head>
+  <body
+    x-data="$store.applicationStore"
+    x-init="init()"
+    class="min-h-lvh w-lvw overflow-x-hidden"
+    :class="darkMode ? 'bg-black text-white transition-all duration-500' : 'bg-gray-100 text-black transition-all duration-500'"
+  >
+    <div class="flex flex-col justify-between">
+      <!-- Header -->
+      <div x-init="headerComponent()"></div>
+
+      <!-- Modules -->
+      <div class="flex-1 mt-64 pb-20 px-10">
+        <!-- Home Page -->
+        <div x-show="currentPage === 'home'" x-ref="home"></div>
+
+        <!-- Cart Page -->
+        <div x-show="currentPage === 'cart'" x-ref="cart"></div>
+
+        <!-- Product Card Page -->
+        <div x-show="currentPage === 'productCard'" x-ref="productCard"></div>
+
+        <!-- Login Page -->
+        <div x-show="currentPage === 'login'" x-ref="login"></div>
+
+        <!-- Register Page -->
+        <div x-show="currentPage === 'register'" x-ref="register"></div>
+
+        <!-- Vendor Registration -->
+        <div
+          x-show="currentPage === 'vendor_registration'"
+          x-ref="vendor_registration"
+        ></div>
+
+        <!-- User Pages -->
+        <!-- Profile -->
+        <div
+          x-show="currentPage === 'user_profile' && isLogin"
+          x-ref="user_profile"
+        ></div>
+
+        <!-- My Orders -->
+        <div
+          x-show="currentPage === 'user_myorders' && isLogin"
+          x-ref="user_myorders"
+        ></div>
+
+        <!-- Informational Pages -->
+        <!-- Careers Page -->
+        <div x-show="currentPage === 'careers'" x-ref="careers"></div>
+
+        <!-- FAQs Page -->
+        <div x-show="currentPage === 'faqs'" x-ref="faqs"></div>
+
+        <!-- Privacy Policies Page -->
+        <div
+          x-show="currentPage === 'privacy_policies'"
+          x-ref="privacy_policies"
+        ></div>
+
+        <!-- Terms And Conditions Page -->
+        <div
+          x-show="currentPage === 'terms_conditions'"
+          x-ref="terms_conditions"
+        ></div>
+
+        <div x-show="currentPage === 'success'" x-ref="success"></div>
+      </div>
+
+      <!-- Dark Theme -->
+      <div class="fixed top-[420px] right-0">
+        <button
+          @click="toggleTheme"
+          class="p-3 rounded-full rounded-r-none shadow-lg"
+          :class="darkMode ? 'bg-white text-black' : 'bg-[#e76f0a] text-white'"
+        >
+          <i class="fa" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <div x-init="footerComponent()"></div>
+    </div>
+  </body>
+</html>
